@@ -13,7 +13,10 @@ const SHELL = [
 self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
     const cache = await caches.open(CACHE);
-    await cache.addAll(SHELL);
+    // Bypass the browser's HTTP cache so a new version never stores stale
+    // files (e.g. an old sound list missing newly recorded clips).
+    const fresh = (urls) => urls.map((u) => new Request(u, { cache: 'reload' }));
+    await cache.addAll(fresh(SHELL));
     const m = await (await cache.match('audio/manifest.json')).json();
     const clips = [];
     for (const voice of Object.keys(m.voices)) {
@@ -21,7 +24,7 @@ self.addEventListener('install', (e) => {
         for (let i = 0; i < n; i++) clips.push(`audio/${voice}/${clip}_${i}.mp3`);
       }
     }
-    await cache.addAll(clips);
+    await cache.addAll(fresh(clips));
     await self.skipWaiting();
   })());
 });

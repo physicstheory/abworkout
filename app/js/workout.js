@@ -45,7 +45,7 @@ export class Workout {
     } else {
       // The only thing the coach says: the move that's coming up.
       if (p.type === 'rest') this.coach.beep(523, 0.3, 0.22);
-      const talk = this.coach.say(`name_${ex.id}`, { after: p.type === 'rest' ? 0.4 : 0 });
+      const talk = this.coach.say(`name_${ex.id}`, { after: p.type === 'rest' ? 0.4 : 0, text: ex.name });
       const base = p.type === 'ready' ? this.s.ready : this.s.rest;
       this.length = Math.max(base, Math.ceil(talk + COUNTDOWN_ROOM));
     }

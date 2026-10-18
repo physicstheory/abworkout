@@ -70,16 +70,39 @@ export class Coach {
       buffers[clip] = [];
       for (let i = 0; i < n; i++) {
         jobs.push(
-          fetch(`audio/${voice}/${clip}_${i}.mp3`)
-            .then((r) => r.arrayBuffer())
-            .then((ab) => new Promise((ok, bad) => this.ctx.decodeAudioData(ab, ok, bad)))
-            .then((buf) => (buffers[clip][i] = buf)),
+          this.fetchClip(voice, clip, i)
+            .then((buf) => (buffers[clip][i] = buf))
+            .catch(() => {}), // one bad clip shouldn't silence the rest
         );
       }
     }
     await Promise.all(jobs);
+    for (const k in buffers) buffers[k] = buffers[k].filter(Boolean);
     this.buffers = buffers;
     this.voice = voice;
+  }
+
+  async fetchClip(voice, clip, i = 0, opts) {
+    const r = await fetch(`audio/${voice}/${clip}_${i}.mp3`, opts);
+    if (!r.ok) throw new Error(`missing ${clip}`);
+    const ab = await r.arrayBuffer();
+    return new Promise((ok, bad) => this.ctx.decodeAudioData(ab, ok, bad));
+  }
+
+  // A clip that didn't load up front: fetch it straight from the server and
+  // play it; if that fails too, have the phone read `text` aloud instead.
+  rescue(clip, text) {
+    this.fetchClip(this.voice, clip, 0, { cache: 'reload' })
+      .then((buf) => {
+        this.buffers[clip] = [buf];
+        this.say(clip);
+      })
+      .catch(() => {
+        if (!text || !window.speechSynthesis) return;
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'en-US';
+        speechSynthesis.speak(u);
+      });
   }
 
   pick(clip) {
@@ -94,7 +117,8 @@ export class Coach {
   // Queue clips one after another. `cut` drops anything still queued first;
   // `after` waits that many seconds (e.g. to clear a beep) before speaking.
   // Returns seconds until the queue finishes speaking.
-  say(clips, { cut = false, gap = 0.18, after = 0 } = {}) {
+  // `text` is read aloud by the phone if a clip can't be loaded at all.
+  say(clips, { cut = false, gap = 0.18, after = 0, text = '' } = {}) {
     if (!this.ctx) return 0;
     // iOS suspends audio after calls/Siri or when another app takes over.
     if (this.ctx.state !== 'running') this.ctx.resume().catch(() => {});
@@ -103,7 +127,11 @@ export class Coach {
     let at = Math.max(now + 0.02 + after, this.queueEnd);
     for (const clip of [].concat(clips)) {
       const buf = this.pick(clip);
-      if (!buf) continue;
+      if (!buf) {
+        this.rescue(clip, text);
+        at += 1.5;
+        continue;
+      }
       const src = this.ctx.createBufferSource();
       src.buffer = buf;
       src.connect(this.out);
