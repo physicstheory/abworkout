@@ -7,7 +7,7 @@ const SHELL = [
   './', 'index.html', 'config.js', 'manifest.webmanifest', 'css/app.css',
   'js/app.js', 'js/exercises.js', 'js/figure.js', 'js/audio.js', 'js/workout.js', 'js/spotify.js',
   'vendor/qrcode.mjs', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png',
-  'audio/manifest.json',
+  'audio/manifest.json', 'audio/silence.mp3',
 ];
 
 self.addEventListener('install', (e) => {

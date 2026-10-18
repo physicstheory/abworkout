@@ -64,7 +64,8 @@ There's no secret key and no server: sign-in uses Spotify's PKCE flow straight f
 
 - **AirPods, headphones, car or Bluetooth speakers:** connect them in iPhone Settings → Bluetooth (or Control Center). The coach and your music both follow the phone's audio output automatically.
 - **Spotify Connect speakers** (Sonos, smart speakers, TVs, laptops): pick them under **Play on** in the music panel. Your music moves there and the coach stays on your phone/AirPods.
-- **Play over music** (Settings): when it's on (the default), the coach talks over your music. That uses iOS's mixing mode, which follows the ring/silent switch, so keep the ring switch on. When it's off, the coach plays even in silent mode, but iOS pauses your music while the coach speaks.
+- **Silent switch:** by default the coach plays out loud through the speaker even when the ring switch is on silent, at the phone's media volume (use the volume buttons). While the coach is active, iPhone pauses other audio.
+- **Talk over my music** (Settings): turn this on if you want the coach mixed on top of Spotify. In this mode iPhone mutes the coach whenever the ring switch is on silent, so keep the ring switch on.
 
 Note: iPhone doesn't let web apps talk directly to Bluetooth gadgets like heart-rate straps. That would need a native App Store app.
 

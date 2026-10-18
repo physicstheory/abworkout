@@ -33,7 +33,7 @@ const paintIcons = (root = document) => root.querySelectorAll('[data-icon]').for
 });
 
 // ---------- Settings ----------
-const DEFAULTS = { work: 40, rest: 20, ready: 10, voice: 'heart', mix: true, autoMusic: true, wake: true, clientId: '' };
+const DEFAULTS = { work: 40, rest: 20, ready: 10, voice: 'heart', overMusic: false, autoMusic: true, wake: true, clientId: '' };
 let settings = { ...DEFAULTS };
 try { settings = { ...DEFAULTS, ...JSON.parse(localStorage.getItem('abw.settings') || '{}') }; } catch {}
 const saveSettings = () => { try { localStorage.setItem('abw.settings', JSON.stringify(settings)); } catch {} };
@@ -96,8 +96,7 @@ function openPreview(ex) {
     animated.set(fig, ex);
     body.querySelectorAll('.ghost span').forEach((s) => (s.style.display = 'inline-block'));
     body.querySelector('[data-act=hear]').onclick = async () => {
-      coach.unlock();
-      coach.setMixing(settings.mix);
+      coach.unlock(settings.overMusic);
       await coach.load(settings.voice);
       coach.say(`ex_${ex.id}`, { cut: true });
     };
@@ -144,7 +143,7 @@ function openSettings() {
     <div class="group">
       <div class="item"><div class="grow">Voice</div>
         <div class="seg" id="voice-seg">${Object.entries(voices).map(([k, v]) => `<button data-v="${k}" class="${settings.voice === k ? 'on' : ''}">${v}</button>`).join('')}</div></div>
-      <button class="item" data-toggle="mix"><div class="grow">Play over music<small>On: coach talks over Spotify (ring switch must be on). Off: works in silent mode but pauses music.</small></div><span class="switch ${settings.mix ? 'on' : ''}"></span></button>
+      <button class="item" data-toggle="overMusic"><div class="grow">Talk over my music<small>Off: the coach always plays out loud, even with the ring switch on silent (iPhone pauses other audio). On: the coach mixes over Spotify, but iPhone mutes it on silent, so keep the ring switch on.</small></div><span class="switch ${settings.overMusic ? 'on' : ''}"></span></button>
       <button class="item" data-toggle="wake"><div class="grow">Keep screen on<small>During a workout</small></div><span class="switch ${settings.wake ? 'on' : ''}"></span></button>
     </div>
     <p class="group-title">Music</p>
@@ -172,8 +171,7 @@ function openSettings() {
       settings.voice = v;
       saveSettings();
       body.querySelectorAll('#voice-seg button').forEach((b) => b.classList.toggle('on', b.dataset.v === v));
-      coach.unlock();
-      coach.setMixing(settings.mix);
+      coach.unlock(settings.overMusic);
       await coach.load(v);
       coach.say('intro', { cut: true });
     };
@@ -183,7 +181,7 @@ function openSettings() {
         settings[k] = !settings[k];
         saveSettings();
         b.querySelector('.switch').classList.toggle('on', settings[k]);
-        if (k === 'mix') coach.setMixing(settings.mix);
+        if (k === 'overMusic') coach.unlock(settings.overMusic);
       };
     });
     body.querySelector('[data-act=music]').onclick = openMusic;
@@ -413,8 +411,7 @@ function buildSegments() {
 }
 
 async function startWorkout() {
-  coach.unlock();
-  coach.setMixing(settings.mix);
+  coach.unlock(settings.overMusic);
   const btn = $('#btn-start');
   btn.disabled = true;
   try {
@@ -424,6 +421,7 @@ async function startWorkout() {
   } finally {
     btn.disabled = false;
   }
+  if (!coach.running) toast('Sound is blocked. Tap Start again and check the volume buttons.');
   if (settings.autoMusic && spotify.connected && !musicState?.is_playing) {
     spotify.play().then(() => setTimeout(refreshMusic, 600)).catch((e) => toast(e.message));
   }
@@ -469,6 +467,7 @@ function onTick(left, length, w) {
 
 function onDone(totalSec) {
   workout = null;
+  coach.sleep(6);
   keepAwake(false);
   animated.clear();
   $('#session').hidden = true;
@@ -478,6 +477,7 @@ function onDone(totalSec) {
 
 function endWorkout() {
   workout?.quit();
+  coach.sleep();
   workout = null;
   keepAwake(false);
   animated.clear();
@@ -528,4 +528,11 @@ spotify.handleRedirect()
   .catch((e) => toast(e.message))
   .finally(startMusicPolling);
 
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+if ('serviceWorker' in navigator) {
+  // When a new version installs, switch to it right away unless mid-workout.
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (hadController && !workout) location.reload();
+  });
+  navigator.serviceWorker.register('sw.js');
+}

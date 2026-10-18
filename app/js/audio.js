@@ -1,5 +1,5 @@
 // Coach voice: pre-recorded neural-voice clips played through Web Audio so
-// they can be queued back-to-back, interrupted, and mixed over music.
+// they can be queued back-to-back and interrupted.
 
 export class Coach {
   constructor() {
@@ -13,24 +13,52 @@ export class Coach {
   }
 
   // Must be called from a tap: iOS only allows audio after a user gesture.
-  unlock() {
+  // overMusic=false (default): the coach plays out loud even when the ring
+  //   switch is on silent; iOS pauses other audio while the app is talking.
+  // overMusic=true: the coach mixes over Spotify, but iOS mutes it on silent.
+  unlock(overMusic = false) {
+    clearTimeout(this.sleepTimer);
+    this.setMixing(overMusic);
     if (!this.ctx) {
       const AC = window.AudioContext || window.webkitAudioContext;
       this.ctx = new AC();
       this.out = this.ctx.createGain();
       this.out.connect(this.ctx.destination);
     }
-    if (this.ctx.state !== 'running') this.ctx.resume();
+    if (this.ctx.state !== 'running') this.ctx.resume().catch(() => {});
     const src = this.ctx.createBufferSource();
     src.buffer = this.ctx.createBuffer(1, 1, 22050);
     src.connect(this.out);
     src.start(0);
   }
 
-  // mix=true: voice plays over Spotify (follows the ring/silent switch).
-  // mix=false: plays even on silent, but iOS pauses other audio.
-  setMixing(mix) {
-    try { if (navigator.audioSession) navigator.audioSession.type = mix ? 'ambient' : 'playback'; } catch {}
+  // Release the silent-mode workaround once the coach is done talking.
+  sleep(afterSec = 0) {
+    clearTimeout(this.sleepTimer);
+    this.sleepTimer = setTimeout(() => this.keepalive?.pause(), afterSec * 1000);
+  }
+
+  get running() { return this.ctx?.state === 'running'; }
+
+  setMixing(overMusic) {
+    this.overMusic = overMusic;
+    if (navigator.audioSession) {
+      try { navigator.audioSession.type = overMusic ? 'ambient' : 'playback'; } catch {}
+      return;
+    }
+    // Older iOS has no audioSession API. A looping silent <audio> element
+    // switches the page to "playback" audio, so Web Audio ignores the
+    // silent switch too.
+    if (!overMusic) {
+      if (!this.keepalive) {
+        this.keepalive = new Audio('audio/silence.mp3');
+        this.keepalive.loop = true;
+        this.keepalive.setAttribute('playsinline', '');
+      }
+      this.keepalive.play().catch(() => {});
+    } else {
+      this.keepalive?.pause();
+    }
   }
 
   async load(voice) {
@@ -67,6 +95,8 @@ export class Coach {
   // Returns seconds until the queue finishes speaking.
   say(clips, { cut = false, gap = 0.18 } = {}) {
     if (!this.ctx) return 0;
+    // iOS suspends audio after calls/Siri or when another app takes over.
+    if (this.ctx.state !== 'running') this.ctx.resume().catch(() => {});
     if (cut) this.stop();
     const now = this.ctx.currentTime;
     let at = Math.max(now + 0.02, this.queueEnd);
