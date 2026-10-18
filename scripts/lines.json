@@ -1,32 +1,126 @@
 {
   "voices": {
-    "heart": { "kokoro": "af_heart", "label": "Heart", "speed": 1.0 },
-    "michael": { "kokoro": "am_michael", "label": "Michael", "speed": 1.0 }
+    "heart": {
+      "kokoro": "af_heart",
+      "label": "Heart",
+      "speed": 1.0
+    },
+    "michael": {
+      "kokoro": "am_michael",
+      "label": "Michael",
+      "speed": 1.0
+    }
   },
   "clips": {
-    "intro": ["Welcome to Workout number one. Ten ab exercises. Let's get after it."],
-    "first_up": ["First up."],
-    "up_next": ["Up next.", "Next up."],
-    "last_one": ["Last one. Let's finish strong."],
-    "go": ["Go!", "Let's go!", "And, go!"],
-    "halfway": ["Halfway there.", "Halfway. Keep it up.", "You're halfway."],
-    "ten_left": ["Ten seconds left.", "Ten more seconds. Push!"],
-    "three": ["Three."],
-    "two": ["Two."],
-    "one": ["One."],
-    "rest": ["Nice work. Take a breather.", "Good job. Cool down and breathe.", "Great. Shake it out and recover."],
-    "complete": ["And that's a wrap! Workout complete. Amazing job today."],
-    "paused": ["Paused."],
-    "resumed": ["Let's keep going."],
-    "ex_basic_crunch": ["Basic crunch. Feet flat, hands behind your head. Lift your shoulders off the mat, then lower slowly."],
-    "ex_right_oblique": ["Right oblique crunch. Bring your right elbow across toward your left knee, and squeeze your side."],
-    "ex_left_oblique": ["Left oblique crunch. Bring your left elbow across toward your right knee, and squeeze."],
-    "ex_bicycle": ["Bicycle crunch. Hands behind your head. Pedal your legs, and twist elbow to opposite knee."],
-    "ex_reverse": ["Reverse crunch. Knees up at ninety degrees. Curl your hips off the mat, and pull your knees to your chest."],
-    "ex_long_arm": ["Long arm crunch. Arms straight overhead, biceps by your ears. Crunch up, and keep those arms long."],
-    "ex_crossover": ["Crossover crunch. Cross your right ankle over your left knee. Bring your left elbow toward your right knee."],
-    "ex_half_curl": ["Half curl. Reach your hands toward your knees. Curl halfway up, pause, and lower with control."],
-    "ex_vertical_leg": ["Vertical leg crunch. Legs straight up toward the ceiling. Crunch up, and reach your chest toward your feet."],
-    "ex_plank": ["Plank. Forearms down, elbows under your shoulders. Keep one straight line from head to heels, and hold."]
+    "intro": [
+      "Welcome to Workout number one. Ten ab exercises. Let's get after it."
+    ],
+    "first_up": [
+      "First up."
+    ],
+    "up_next": [
+      "Up next.",
+      "Next up."
+    ],
+    "last_one": [
+      "Last one. Let's finish strong."
+    ],
+    "go": [
+      "Go!",
+      "Let's go!",
+      "And, go!"
+    ],
+    "halfway": [
+      "Halfway there.",
+      "Halfway. Keep it up.",
+      "You're halfway."
+    ],
+    "ten_left": [
+      "Ten seconds left.",
+      "Ten more seconds. Push!"
+    ],
+    "three": [
+      "Three."
+    ],
+    "two": [
+      "Two."
+    ],
+    "one": [
+      "One."
+    ],
+    "rest": [
+      "Nice work. Take a breather.",
+      "Good job. Cool down and breathe.",
+      "Great. Shake it out and recover."
+    ],
+    "complete": [
+      "And that's a wrap! Workout complete. Amazing job today."
+    ],
+    "paused": [
+      "Paused."
+    ],
+    "resumed": [
+      "Let's keep going."
+    ],
+    "ex_basic_crunch": [
+      "Basic crunch. Feet flat, hands behind your head. Lift your shoulders off the mat, then lower slowly."
+    ],
+    "ex_right_oblique": [
+      "Right oblique crunch. Bring your right elbow across toward your left knee, and squeeze your side."
+    ],
+    "ex_left_oblique": [
+      "Left oblique crunch. Bring your left elbow across toward your right knee, and squeeze."
+    ],
+    "ex_bicycle": [
+      "Bicycle crunch. Hands behind your head. Pedal your legs, and twist elbow to opposite knee."
+    ],
+    "ex_reverse": [
+      "Reverse crunch. Knees up at ninety degrees. Curl your hips off the mat, and pull your knees to your chest."
+    ],
+    "ex_long_arm": [
+      "Long arm crunch. Arms straight overhead, biceps by your ears. Crunch up, and keep those arms long."
+    ],
+    "ex_crossover": [
+      "Crossover crunch. Cross your right ankle over your left knee. Bring your left elbow toward your right knee."
+    ],
+    "ex_half_curl": [
+      "Half curl. Reach your hands toward your knees. Curl halfway up, pause, and lower with control."
+    ],
+    "ex_vertical_leg": [
+      "Vertical leg crunch. Legs straight up toward the ceiling. Crunch up, and reach your chest toward your feet."
+    ],
+    "ex_plank": [
+      "Plank. Forearms down, elbows under your shoulders. Keep one straight line from head to heels, and hold."
+    ],
+    "name_basic_crunch": [
+      "Basic crunch."
+    ],
+    "name_right_oblique": [
+      "Right oblique crunch."
+    ],
+    "name_left_oblique": [
+      "Left oblique crunch."
+    ],
+    "name_bicycle": [
+      "Bicycle crunch."
+    ],
+    "name_reverse": [
+      "Reverse crunch."
+    ],
+    "name_long_arm": [
+      "Long arm crunch."
+    ],
+    "name_crossover": [
+      "Crossover crunch."
+    ],
+    "name_half_curl": [
+      "Half curl."
+    ],
+    "name_vertical_leg": [
+      "Vertical leg crunch."
+    ],
+    "name_plank": [
+      "Plank."
+    ]
   }
 }

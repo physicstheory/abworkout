@@ -91,15 +91,16 @@ export class Coach {
     return v[i];
   }
 
-  // Queue clips one after another. `cut` drops anything still queued first.
+  // Queue clips one after another. `cut` drops anything still queued first;
+  // `after` waits that many seconds (e.g. to clear a beep) before speaking.
   // Returns seconds until the queue finishes speaking.
-  say(clips, { cut = false, gap = 0.18 } = {}) {
+  say(clips, { cut = false, gap = 0.18, after = 0 } = {}) {
     if (!this.ctx) return 0;
     // iOS suspends audio after calls/Siri or when another app takes over.
     if (this.ctx.state !== 'running') this.ctx.resume().catch(() => {});
     if (cut) this.stop();
     const now = this.ctx.currentTime;
-    let at = Math.max(now + 0.02, this.queueEnd);
+    let at = Math.max(now + 0.02 + after, this.queueEnd);
     for (const clip of [].concat(clips)) {
       const buf = this.pick(clip);
       if (!buf) continue;

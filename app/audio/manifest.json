@@ -27,6 +27,16 @@
     "ex_crossover": 1,
     "ex_half_curl": 1,
     "ex_vertical_leg": 1,
-    "ex_plank": 1
+    "ex_plank": 1,
+    "name_basic_crunch": 1,
+    "name_right_oblique": 1,
+    "name_left_oblique": 1,
+    "name_bicycle": 1,
+    "name_reverse": 1,
+    "name_long_arm": 1,
+    "name_crossover": 1,
+    "name_half_curl": 1,
+    "name_vertical_leg": 1,
+    "name_plank": 1
   }
 }

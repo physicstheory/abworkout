@@ -1,9 +1,10 @@
 // Workout timeline: get ready -> work -> cool down -> work ... -> done.
-// Drives the coach's voice cues; the UI subscribes via onTick / onPhase.
+// The coach names each move at the switch; beeps count down the timing.
+// The UI subscribes via onTick / onPhase.
 
 import { EXERCISES } from './exercises.js';
 
-// Announcement phases stretch so the coach is never cut off before "3, 2, 1".
+// Announcement phases stretch so the name is never cut off by the countdown.
 const COUNTDOWN_ROOM = 4;
 
 export class Workout {
@@ -40,14 +41,11 @@ export class Workout {
     const ex = EXERCISES[p.ex];
     if (p.type === 'work') {
       this.length = this.s.work;
-      this.coach.beep(1046, 0.18);
-      this.coach.say('go');
+      this.coach.beep(1046, 0.35, 0.22);
     } else {
-      const intro = p.type === 'ready'
-        ? ['intro', 'first_up']
-        : ['rest', p.ex === EXERCISES.length - 1 ? 'last_one' : 'up_next'];
-      if (p.type === 'rest') this.coach.beep(523, 0.22);
-      const talk = this.coach.say([...intro, `ex_${ex.id}`]);
+      // The only thing the coach says: the move that's coming up.
+      if (p.type === 'rest') this.coach.beep(523, 0.3, 0.22);
+      const talk = this.coach.say(`name_${ex.id}`, { after: p.type === 'rest' ? 0.4 : 0 });
       const base = p.type === 'ready' ? this.s.ready : this.s.rest;
       this.length = Math.max(base, Math.ceil(talk + COUNTDOWN_ROOM));
     }
@@ -55,10 +53,10 @@ export class Workout {
     this.tick();
   }
 
-  cue(key, clip, opts) {
+  cue(key, freq) {
     if (this.fired.has(key)) return;
     this.fired.add(key);
-    this.coach.say(clip, opts);
+    this.coach.beep(freq, 0.14, 0.2);
   }
 
   tick() {
@@ -69,16 +67,12 @@ export class Workout {
     const p = this.phase;
 
     if (!this.paused) {
-      if (p.type === 'work') {
-        if (this.length >= 20 && this.elapsed >= this.length / 2) this.cue('half', 'halfway');
-        if (this.length >= 25 && left <= 10.2) this.cue('ten', 'ten_left');
-      }
-      // Count down out of every phase except into the finish.
+      // Countdown beeps out of every phase except into the finish.
       const last = p.type === 'work' && this.k === this.phases.length - 1;
       if (!last) {
-        if (left <= 3.05) this.cue('3', 'three', { cut: true });
-        if (left <= 2.05) this.cue('2', 'two', { cut: true });
-        if (left <= 1.05) this.cue('1', 'one', { cut: true });
+        if (left <= 3.05) this.cue('3', 660);
+        if (left <= 2.05) this.cue('2', 660);
+        if (left <= 1.05) this.cue('1', 660);
       }
       if (left <= 0) return this.next();
     }
@@ -99,15 +93,14 @@ export class Workout {
   togglePause() {
     this.paused = !this.paused;
     this.coach.stop();
-    this.coach.say(this.paused ? 'paused' : 'resumed');
     this.tick();
     return this.paused;
   }
 
   finish() {
     this.stop();
-    this.coach.beep(1318, 0.3);
-    this.coach.say('complete');
+    this.coach.beep(1046, 0.18, 0.22);
+    setTimeout(() => this.coach.beep(1318, 0.45, 0.22), 200);
     this.cb.onDone((performance.now() - this.startedAt) / 1000);
   }
 

@@ -6,17 +6,16 @@ A sharp, single-purpose iPhone ab workout: **Workout #1**, ten moves, a natural-
 
 ## How a workout runs
 
-1. **Get ready.** The coach welcomes you and announces the first move with a quick form cue while the animated coach demonstrates it.
-2. **3, 2, 1, Go.** The work timer runs (default 40 s). You get a "halfway" call and a "ten seconds left" call.
-3. **Cool down.** The rest timer runs (default 20 s). The coach says "Up next…" and explains the next move while it plays on screen.
-4. Repeat for all ten moves, then the finish screen shows your time.
+1. **Get ready.** The coach says the first move's name while the animated coach demonstrates it.
+2. **Beep, beep, beep, go.** Three countdown beeps, then a high beep starts the work timer (default 40 s).
+3. **Switch.** When time's up, a low beep starts the cool-down (default 20 s) and the coach says the name of the next move, nothing else, while it plays on screen.
+4. Repeat for all ten moves, then a finish chime and the summary screen.
 
-Pause, skip and go back are on screen. Work, cool-down and get-ready lengths are in **Settings**. If the coach needs more time to finish talking, the cool-down stretches a little so the "3, 2, 1" never cuts them off.
+Pause, skip and go back are on screen. Work, cool-down and get-ready lengths are in **Settings**. Tap any move on the home screen and choose **Hear coach** for a spoken form tip.
 
 ## The voice
 
-The coach isn't your phone's text-to-speech. Every line was recorded ahead of time with **Kokoro**, an open-source neural voice model, and ships with the app as small MP3s. There are two coaches to choose from: **Heart** (default) and **Michael**. Lines vary at random ("Let's go!", "And, go!"), so it doesn't sound robotic.
-
+The coach isn't your phone's text-to-speech. Every line was recorded ahead of time with **Kokoro**, an open-source neural voice model, and ships with the app as small MP3s. There are two coaches to choose from: **Heart** (default) and **Michael**. 
 To change what the coach says, edit `scripts/lines.json` and run `scripts/generate_voice.py` (setup steps are at the top of that file).
 
 ## Get it on your iPhone (free)
