@@ -1,0 +1,5 @@
+.tts/
+*.onnx
+voices-*.bin
+__pycache__/
+.DS_Store

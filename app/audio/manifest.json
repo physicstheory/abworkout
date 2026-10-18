@@ -1,0 +1,32 @@
+{
+  "voices": {
+    "heart": "Heart",
+    "michael": "Michael"
+  },
+  "clips": {
+    "intro": 1,
+    "first_up": 1,
+    "up_next": 2,
+    "last_one": 1,
+    "go": 3,
+    "halfway": 3,
+    "ten_left": 2,
+    "three": 1,
+    "two": 1,
+    "one": 1,
+    "rest": 3,
+    "complete": 1,
+    "paused": 1,
+    "resumed": 1,
+    "ex_basic_crunch": 1,
+    "ex_right_oblique": 1,
+    "ex_left_oblique": 1,
+    "ex_bicycle": 1,
+    "ex_reverse": 1,
+    "ex_long_arm": 1,
+    "ex_crossover": 1,
+    "ex_half_curl": 1,
+    "ex_vertical_leg": 1,
+    "ex_plank": 1
+  }
+}

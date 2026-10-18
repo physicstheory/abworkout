@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#09090d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="AbWorkout">
+  <meta name="description" content="A 10-move ab workout with a voice coach, animated demos and Spotify controls.">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <title>AbWorkout</title>
+  <link rel="stylesheet" href="css/app.css">
+  <script src="config.js"></script>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <main id="home" class="screen home">
+    <header class="top">
+      <div>
+        <p class="eyebrow">AbWorkout</p>
+        <h1>Workout #1</h1>
+      </div>
+      <div class="top-actions">
+        <button id="btn-share" class="icon-btn" aria-label="Share app" data-icon="share"></button>
+        <button id="btn-music" class="icon-btn" aria-label="Music" data-icon="music"></button>
+        <button id="btn-settings" class="icon-btn" aria-label="Settings" data-icon="gear"></button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-stat"><b id="hero-time">10</b><span>minutes</span></div>
+      <div class="hero-stat"><b>10</b><span>exercises</span></div>
+      <div class="hero-stat"><b id="hero-split">40/20</b><span>work / cool</span></div>
+    </section>
+
+    <div id="install-tip" class="tip" hidden>
+      <span data-icon="share"></span>
+      <p>Install it: tap <b>Share</b> in Safari, then <b>Add to Home Screen</b>. It opens instantly and works offline.</p>
+      <button class="tip-x" aria-label="Dismiss" data-icon="x"></button>
+    </div>
+
+    <ol id="list" class="list"></ol>
+
+    <div class="dock">
+      <div id="home-music" class="minibar" hidden></div>
+      <button id="btn-start" class="primary"><span data-icon="play"></span>Start Workout</button>
+    </div>
+  </main>
+
+  <section id="session" class="screen session" hidden>
+    <div class="s-top">
+      <button id="s-close" class="icon-btn" aria-label="End workout" data-icon="x"></button>
+      <div class="s-count"><b id="s-index">1</b> of 10</div>
+      <button id="s-music-btn" class="icon-btn" aria-label="Music" data-icon="music"></button>
+    </div>
+    <div id="s-progress" class="segments"></div>
+
+    <div class="s-head">
+      <span id="s-phase" class="pill">Get ready</span>
+      <h2 id="s-name">Basic Crunch</h2>
+      <p id="s-target" class="muted"></p>
+    </div>
+
+    <div class="stage"><svg id="s-figure" aria-hidden="true"></svg></div>
+
+    <div class="clock">
+      <svg viewBox="0 0 120 120" class="ring">
+        <circle class="track" cx="60" cy="60" r="54"/>
+        <circle id="s-ring" class="bar" cx="60" cy="60" r="54"/>
+      </svg>
+      <div class="clock-num"><span id="s-time">0:10</span><small id="s-sub"></small></div>
+    </div>
+
+    <div class="controls">
+      <button id="s-prev" class="ctl" aria-label="Previous" data-icon="prev"></button>
+      <button id="s-pause" class="ctl big" aria-label="Pause" data-icon="pause"></button>
+      <button id="s-next" class="ctl" aria-label="Skip" data-icon="next"></button>
+    </div>
+
+    <div id="s-music" class="minibar" hidden></div>
+  </section>
+
+  <section id="done" class="screen done" hidden>
+    <div class="done-badge" data-icon="check"></div>
+    <h2>Workout complete</h2>
+    <p class="muted">All 10 moves. Your core says thanks.</p>
+    <div class="done-stats">
+      <div><b id="done-time">0:00</b><span>total time</span></div>
+      <div><b>10</b><span>exercises</span></div>
+    </div>
+    <button id="done-ok" class="primary">Done</button>
+    <button id="done-share" class="ghost">Send the app to a friend</button>
+  </section>
+
+  <div id="sheet" class="sheet-wrap" hidden>
+    <div class="sheet" role="dialog" aria-modal="true">
+      <div class="grab"></div>
+      <div id="sheet-body"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+</body>
+</html>
