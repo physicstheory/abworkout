@@ -8,13 +8,12 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="AbWorkout">
-  <meta name="description" content="A 10-move ab workout with a voice coach, animated demos and Spotify controls.">
+  <meta name="description" content="A 10-move ab workout with a voice coach and animated demos.">
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
   <title>AbWorkout</title>
   <link rel="stylesheet" href="css/app.css">
-  <script src="config.js"></script>
   <script type="module" src="js/app.js"></script>
 </head>
 <body>
@@ -26,7 +25,6 @@
       </div>
       <div class="top-actions">
         <button id="btn-share" class="icon-btn" aria-label="Share app" data-icon="share"></button>
-        <button id="btn-music" class="icon-btn" aria-label="Music" data-icon="music"></button>
         <button id="btn-settings" class="icon-btn" aria-label="Settings" data-icon="gear"></button>
       </div>
     </header>
@@ -46,7 +44,6 @@
     <ol id="list" class="list"></ol>
 
     <div class="dock">
-      <div id="home-music" class="minibar" hidden></div>
       <button id="btn-start" class="primary"><span data-icon="play"></span>Start Workout</button>
     </div>
   </main>
@@ -55,7 +52,7 @@
     <div class="s-top">
       <button id="s-close" class="icon-btn" aria-label="End workout" data-icon="x"></button>
       <div class="s-count"><b id="s-index">1</b> of 10</div>
-      <button id="s-music-btn" class="icon-btn" aria-label="Music" data-icon="music"></button>
+      <span class="icon-btn" style="visibility:hidden"></span>
     </div>
     <div id="s-progress" class="segments"></div>
 
@@ -80,8 +77,6 @@
       <button id="s-pause" class="ctl big" aria-label="Pause" data-icon="pause"></button>
       <button id="s-next" class="ctl" aria-label="Skip" data-icon="next"></button>
     </div>
-
-    <div id="s-music" class="minibar" hidden></div>
   </section>
 
   <section id="done" class="screen done" hidden>

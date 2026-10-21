@@ -4,8 +4,8 @@
 const BUILD = 'dev';
 const CACHE = `abw-${BUILD}`;
 const SHELL = [
-  './', 'index.html', 'config.js', 'manifest.webmanifest', 'css/app.css',
-  'js/app.js', 'js/exercises.js', 'js/figure.js', 'js/audio.js', 'js/workout.js', 'js/spotify.js',
+  './', 'index.html', 'manifest.webmanifest', 'css/app.css',
+  'js/app.js', 'js/exercises.js', 'js/figure.js', 'js/audio.js', 'js/workout.js',
   'vendor/qrcode.mjs', 'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png',
   'audio/manifest.json', 'audio/silence.mp3',
 ];
@@ -41,7 +41,7 @@ self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET' || url.origin !== location.origin) return;
   e.respondWith((async () => {
     const cache = await caches.open(CACHE);
-    // Ignore ?code=... from the Spotify redirect when matching the page.
+    // Ignore any ?query on the page URL when matching it.
     const hit = await cache.match(e.request, { ignoreSearch: e.request.mode === 'navigate' });
     if (hit) return hit;
     try {

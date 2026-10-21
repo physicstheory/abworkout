@@ -13,12 +13,12 @@ export class Coach {
   }
 
   // Must be called from a tap: iOS only allows audio after a user gesture.
-  // overMusic=false (default): the coach plays out loud even when the ring
-  //   switch is on silent; iOS pauses other audio while the app is talking.
-  // overMusic=true: the coach mixes over Spotify, but iOS mutes it on silent.
-  unlock(overMusic = false) {
+  // mix=true (default): the coach plays alongside music from other apps
+  //   without stopping it, but iOS mutes it while Silent mode is on.
+  // mix=false: the coach is heard in Silent mode, but iOS pauses other audio.
+  unlock(mix = true) {
     clearTimeout(this.sleepTimer);
-    this.setMixing(overMusic);
+    this.setMixing(mix);
     if (!this.ctx) {
       const AC = window.AudioContext || window.webkitAudioContext;
       this.ctx = new AC();
@@ -40,16 +40,15 @@ export class Coach {
 
   get running() { return this.ctx?.state === 'running'; }
 
-  setMixing(overMusic) {
-    this.overMusic = overMusic;
+  setMixing(mix) {
     if (navigator.audioSession) {
-      try { navigator.audioSession.type = overMusic ? 'ambient' : 'playback'; } catch {}
+      try { navigator.audioSession.type = mix ? 'ambient' : 'playback'; } catch {}
       return;
     }
     // Older iOS has no audioSession API. A looping silent <audio> element
     // switches the page to "playback" audio, so Web Audio ignores the
     // silent switch too.
-    if (!overMusic) {
+    if (!mix) {
       if (!this.keepalive) {
         this.keepalive = new Audio('audio/silence.mp3');
         this.keepalive.loop = true;

@@ -1,7 +1,7 @@
 {
   "name": "AbWorkout",
   "short_name": "AbWorkout",
-  "description": "A 10-move ab workout with a voice coach, animated demos and Spotify controls.",
+  "description": "A 10-move ab workout with a voice coach and animated demos.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
